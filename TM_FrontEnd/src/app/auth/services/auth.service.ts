@@ -110,4 +110,11 @@ export class AuthService {
     console.error('Сталася помилка HTTP:', error);
     return throwError(() => error);
   }
+  get currentUser(): IUser | null {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      return JSON.parse(userData);
+    }
+    return null;
+  }
 }
