@@ -1,0 +1,22 @@
+<div class="registration-container">
+  <h2>Реєстрація</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="name">Ім'я:</label>
+      <input id="name" type="text" formControlName="name">
+    </div>
+    <div class="form-field">
+      <label for="email">Електронна пошта:</label>
+      <input id="email" type="email" formControlName="email">
+    </div>
+    <div class="form-field">
+      <label for="phone">Телефон:</label>
+      <input id="phone" type="tel" formControlName="phone">
+    </div>
+    <div class="form-field">
+      <label for="password">Пароль:</label>
+      <input id="password" type="password" formControlName="password">
+    </div>
+    <button type="submit" [disabled]="!registerForm.valid">Зареєструватись</button>
+  </form>
+</div>
