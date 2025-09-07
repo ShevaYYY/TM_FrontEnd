@@ -5,13 +5,16 @@ import { AuthService } from '../../auth/services/auth.service';
 export const adminGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+ 
+  if (!authService.isAuthenticated()) {
+    router.navigate(['/login']); 
+    return false;
+  }
 
-  
-  if (authService.isAuthenticated() && authService.currentUser?.role === 'admin') {
+  if (authService.currentUser?.role === 'admin') {
     return true; 
   }
 
-  
-  router.navigate(['/user']);
+  router.navigate(['/user']); 
   return false;
 };

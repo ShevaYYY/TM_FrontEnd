@@ -48,8 +48,9 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     this.user = null;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
+  
 
   registration(registrationData: any): Observable<AuthResponse> {
     console.log('Відправляю запит на реєстрацію:', registrationData);

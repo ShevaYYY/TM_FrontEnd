@@ -1,12 +1,14 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 import { adminGuard } from './core/guards/admin.guard';
 import { clientGuard } from './core/guards/client.guard';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/user', 
-    pathMatch: 'full'
+    component: HomeComponent
+    
   },
   {
     path: 'login',
