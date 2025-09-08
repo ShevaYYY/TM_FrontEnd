@@ -1,0 +1,37 @@
+<form [formGroup]="abonentForm" (ngSubmit)="onSubmit()" class="form-container">
+  <div class="form-group">
+    <label for="userSelect">Виберіть користувача</label>
+    <select id="userSelect" formControlName="userId">
+      <option value="" disabled selected>-- Виберіть користувача --</option>
+      <option *ngFor="let user of users" [value]="user._id">
+        {{ user.email }} ({{ user.name }})
+      </option>
+    </select>
+    <div *ngIf="abonentForm.get('userId')?.invalid && abonentForm.get('userId')?.touched" class="error-message">
+      Вибір користувача обов'язковий.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="codeEDRPOU">Код ЄДРПОУ</label>
+    <input id="codeEDRPOU" type="text" formControlName="codeEDRPOU">
+    <div *ngIf="abonentForm.get('codeEDRPOU')?.invalid && abonentForm.get('codeEDRPOU')?.touched" class="error-message">
+      Код ЄДРПОУ обов'язковий.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="citySelect">Виберіть місто</label>
+    <select id="citySelect" formControlName="cityId">
+      <option value="" disabled selected>-- Виберіть місто --</option>
+      <option *ngFor="let city of cities" [value]="city._id">
+        {{ city.name }}
+      </option>
+    </select>
+    <div *ngIf="abonentForm.get('cityId')?.invalid && abonentForm.get('cityId')?.touched" class="error-message">
+      Вибір міста обов'язковий.
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="abonentForm.invalid">Додати абонента</button>
+</form>

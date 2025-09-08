@@ -1,5 +1,61 @@
-<div>
-  <h2>Панель керування адміна</h2>
-  <p>Ласкаво просимо, адміністратор!</p>
-  <button (click)="logout()">Вийти</button>
+<div class="admin-dashboard-container">
+  <aside class="sidebar">
+    <button (click)="setView('abonents')" [class.active]="view === 'abonents'">Абоненти</button>
+    <button (click)="setView('cities')" [class.active]="view === 'cities'">Міста</button>
+    <button (click)="setView('add-abonent')" [class.active]="view === 'add-abonent'">Додати абонента</button>
+    <button (click)="setView('add-city')" [class.active]="view === 'add-city'">Додати місто</button>
+    <button (click)="logout()">Вийти</button>
+  </aside>
+
+  <main class="content">
+    <div *ngIf="view === 'abonents'" class="view-section">
+      <h2>Список абонентів</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Код ЄДРПОУ</th>
+            <th>Місто</th>
+            <th>Користувач (email)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let abonent of abonents">
+            <td>{{ abonent.codeEDRPOU }}</td>
+            <td>{{ abonent.cityId?.name }}</td>
+            <td>{{ abonent.userId?.email }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="view === 'cities'" class="view-section">
+      <h2>Список міст</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Назва</th>
+            <th>Денний тариф</th>
+            <th>Нічний тариф</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let city of cities">
+            <td>{{ city.name }}</td>
+            <td>{{ city.dayTariff | number: '1.2-2' }} грн</td>
+            <td>{{ city.nightTariff | number: '1.2-2' }} грн</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div *ngIf="view === 'add-abonent'" class="view-section">
+      <h2>Додати нового абонента</h2>
+      <app-abonent-form (abonentAdded)="loadAbonents()"></app-abonent-form>
+    </div>
+
+    <div *ngIf="view === 'add-city'" class="view-section">
+      <h2>Додати нове місто</h2>
+      <app-city-form (cityAdded)="loadCities()"></app-city-form>
+    </div>
+  </main>
 </div>

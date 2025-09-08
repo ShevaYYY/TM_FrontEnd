@@ -1,0 +1,27 @@
+<form [formGroup]="cityForm" (ngSubmit)="onSubmit()" class="form-container">
+  <div class="form-group">
+    <label for="cityName">Назва міста</label>
+    <input id="cityName" type="text" formControlName="name">
+    <div *ngIf="cityForm.get('name')?.invalid && cityForm.get('name')?.touched" class="error-message">
+      Назва міста обов'язкова.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="dayTariff">Денний тариф (грн/хв)</label>
+    <input id="dayTariff" type="number" formControlName="dayTariff">
+    <div *ngIf="cityForm.get('dayTariff')?.invalid && cityForm.get('dayTariff')?.touched" class="error-message">
+      Денний тариф обов'язковий і має бути не менше 0.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="nightTariff">Нічний тариф (грн/хв)</label>
+    <input id="nightTariff" type="number" formControlName="nightTariff">
+    <div *ngIf="cityForm.get('nightTariff')?.invalid && cityForm.get('nightTariff')?.touched" class="error-message">
+      Нічний тариф обов'язковий і має бути не менше 0.
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="cityForm.invalid">Додати місто</button>
+</form>

@@ -26,7 +26,7 @@ export class RegisterComponent {
       this.authService.registration(this.registerForm.value).subscribe({
         next: (data) => {
           console.log('Registration successful', data);
-          this.router.navigate(['/']); // Перенаправлення на головну сторінку після успішної реєстрації
+          this.router.navigate(['/login']); 
         },
         error: (err) => {
           console.error('Registration failed', err);

@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 export interface IUser {
+  _id: string;
   email: string;
   name: string;
   phone: string;
@@ -50,7 +51,7 @@ export class AuthService {
     this.user = null;
     this.router.navigate(['/']);
   }
-  
+
 
   registration(registrationData: any): Observable<AuthResponse> {
     console.log('Відправляю запит на реєстрацію:', registrationData);
