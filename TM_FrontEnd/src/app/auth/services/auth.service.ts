@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'; // Додали HttpErrorResponse
-import { Observable, throwError } from 'rxjs'; // Додали throwError
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 export interface IUser {
-  _id: string;
+  id: string;
   email: string;
   name: string;
   phone: string;
@@ -24,7 +24,8 @@ export interface AuthResponse {
 })
 export class AuthService {
   private readonly apiUrl = 'http://localhost:5000/api';
-  private user: IUser | null = null;
+  private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject<IUser | null>(null);
+  public user$: Observable<IUser | null> = this.userSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     this.loadUserFromLocalStorage();
@@ -33,7 +34,8 @@ export class AuthService {
   private loadUserFromLocalStorage(): void {
     const userData = localStorage.getItem('user');
     if (userData) {
-      this.user = JSON.parse(userData);
+      const user = JSON.parse(userData);
+      this.userSubject.next(user);
     }
   }
 
@@ -41,17 +43,16 @@ export class AuthService {
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     localStorage.setItem('user', JSON.stringify(data.user));
-    this.user = data.user;
+    this.userSubject.next(data.user);
   }
 
   private clearAuthData() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
-    this.user = null;
+    this.userSubject.next(null);
     this.router.navigate(['/']);
   }
-
 
   registration(registrationData: any): Observable<AuthResponse> {
     console.log('Відправляю запит на реєстрацію:', registrationData);
@@ -90,7 +91,7 @@ export class AuthService {
     console.log('Відправляю запит на оновлення токена');
     return this.http.get<AuthResponse>(`${this.apiUrl}/refresh`, { withCredentials: true })
       .pipe(
-        tap(data => console.log('Успішна відповідь на оновлення токена:', data)),
+        tap(data => this.setAuthData(data)),
         catchError(this.handleError)
       );
   }
@@ -112,11 +113,8 @@ export class AuthService {
     console.error('Сталася помилка HTTP:', error);
     return throwError(() => error);
   }
+
   get currentUser(): IUser | null {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      return JSON.parse(userData);
-    }
-    return null;
+    return this.userSubject.value;
   }
 }

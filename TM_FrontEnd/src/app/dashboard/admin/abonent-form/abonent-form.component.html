@@ -3,7 +3,7 @@
     <label for="userSelect">Виберіть користувача</label>
     <select id="userSelect" formControlName="userId">
       <option value="" disabled selected>-- Виберіть користувача --</option>
-      <option *ngFor="let user of users" [value]="user._id">
+      <option *ngFor="let user of users" [value]="user.id">
         {{ user.email }} ({{ user.name }})
       </option>
     </select>

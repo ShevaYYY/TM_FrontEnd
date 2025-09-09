@@ -1,18 +1,26 @@
-<div class="login-container">
-  <h2>Вхід</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-field">
-      <label for="email">Електронна пошта:</label>
-      <input id="email" type="email" formControlName="email">
-    </div>
-    <div class="form-field">
-      <label for="password">Пароль:</label>
-      <input id="password" type="password" formControlName="password">
-    </div>
-    <button type="submit" [disabled]="!loginForm.valid">Увійти</button>
-  </form>
+<mat-card class="login-card">
+  <mat-card-title>Вхід</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="full-width">
+        <mat-label>Електронна пошта</mat-label>
+        <input matInput type="email" formControlName="email">
+        <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Будь ласка, введіть коректну електронну пошту.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Пароль</mat-label>
+        <input matInput type="password" formControlName="password">
+        <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Пароль є обов'язковим.
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Увійти</button>
+    </form>
+  </mat-card-content>
   
   <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
   </div>
-</div>
+</mat-card>

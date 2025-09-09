@@ -18,4 +18,10 @@ export class AbonentService {
   createAbonent(abonentData: any): Observable<IAbonent> {
     return this.http.post<IAbonent>(`${this.apiUrl}/abonents`, abonentData);
   }
+  deleteAbonent(id: string): Observable<IAbonent> {
+    return this.http.delete<IAbonent>(`${this.apiUrl}/abonents/${id}`);
+  }
+  getAbonentByUserId(userId: string): Observable<IAbonent> {
+    return this.http.get<IAbonent>(`${this.apiUrl}/abonents/user/${userId}`);
+  }
 }

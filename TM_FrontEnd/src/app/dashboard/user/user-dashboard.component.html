@@ -1,5 +1,77 @@
-<div>
-  <h2>Особистий кабінет</h2>
-  <p>Ласкаво просимо, користувач!</p>
-  <button (click)="logout()">Вийти</button>
+<div class="user-dashboard-container">
+  <mat-toolbar class="toolbar">
+    <span class="toolbar-title">Панель користувача</span>
+    <span class="spacer"></span>
+    <button mat-button (click)="logout()">Вийти</button>
+  </mat-toolbar>
+
+  <main class="content">
+    <mat-card class="section-card">
+      <mat-card-title>Здійснити дзвінок</mat-card-title>
+      <mat-card-content>
+        <div *ngIf="!abonent" class="no-abonent">
+          <mat-icon color="warn">warning</mat-icon>
+          Абонент для цього користувача не знайдений. Зверніться до адміністратора або створіть абонента.
+        </div>
+      </mat-card-content>
+
+      <div class="call-controls" *ngIf="abonent">
+        <mat-form-field appearance="outline" class="phone-input">
+          <mat-label>Номер телефону</mat-label>
+          <input matInput type="text" [(ngModel)]="phoneNumber" [disabled]="isCalling" placeholder="Наприклад, 0671234567">
+        </mat-form-field>
+        
+        <button mat-raised-button color="primary" *ngIf="!isCalling" (click)="startCall()" [disabled]="!phoneNumber || !abonent">
+          Дзвонити
+        </button>
+
+        <button mat-raised-button color="warn" *ngIf="isCalling" (click)="endCall()">
+          Завершити
+        </button>
+      </div>
+
+      <mat-card-actions *ngIf="isCalling" class="call-timer-container">
+        <p class="call-timer">Час дзвінка: {{ formatDuration(callDuration) }}</p>
+      </mat-card-actions>
+    </mat-card>
+    
+    <mat-card class="section-card call-history-card">
+      <mat-card-title>Історія дзвінків</mat-card-title>
+      <mat-card-content>
+        <table mat-table [dataSource]="callHistory" *ngIf="callHistory && callHistory.length > 0">
+          <ng-container matColumnDef="phoneNumber">
+            <th mat-header-cell *matHeaderCellDef>Номер</th>
+            <td mat-cell *matCellDef="let call">{{ call.phoneNumber }}</td>
+          </ng-container>
+          
+          <ng-container matColumnDef="city">
+            <th mat-header-cell *matHeaderCellDef>Місто</th>
+            <td mat-cell *matCellDef="let call">{{ call.cityId?.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="startTime">
+            <th mat-header-cell *matHeaderCellDef>Початок</th>
+            <td mat-cell *matCellDef="let call">{{ call.startTime | date: 'short' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef>Тривалість</th>
+            <td mat-cell *matCellDef="let call">{{ formatDuration(call.duration) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef>Вартість (грн)</th>
+            <td mat-cell *matCellDef="let call">{{ call.cost | number: '1.2-2' }}</td>
+          </ng-container>
+          
+          <tr mat-header-row *matHeaderRowDef="['phoneNumber', 'city', 'startTime', 'duration', 'cost']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['phoneNumber', 'city', 'startTime', 'duration', 'cost'];"></tr>
+        </table>
+      </mat-card-content>
+
+      <mat-card-footer *ngIf="callHistory?.length === 0">
+        <p class="no-calls-message">Дзвінків ще немає.</p>
+      </mat-card-footer>
+    </mat-card>
+  </main>
 </div>

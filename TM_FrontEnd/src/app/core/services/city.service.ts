@@ -18,4 +18,7 @@ export class CityService {
   createCity(cityData: any): Observable<ICity> {
     return this.http.post<ICity>(`${this.apiUrl}/cities`, cityData);
   }
+  deleteCity(id: string): Observable<ICity> {
+    return this.http.delete<ICity>(`${this.apiUrl}/cities/${id}`);
+  }
 }

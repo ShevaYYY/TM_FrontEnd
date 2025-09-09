@@ -1,8 +1,12 @@
-<div class="home-container">
-  <h1>Ласкаво просимо!</h1>
-  <p>Будь ласка, увійдіть або зареєструйтесь, щоб продовжити.</p>
-  <div class="button-group">
-    <a routerLink="/login" class="button">Увійти</a>
-    <a routerLink="/register" class="button">Зареєструватись</a>
-  </div>
+<div class="center-container">
+  <mat-card class="welcome-card">
+    <mat-card-title>Ласкаво просимо!</mat-card-title>
+    <mat-card-content>
+      <p>Будь ласка, увійдіть або зареєструйтесь, щоб продовжити.</p>
+    </mat-card-content>
+    <mat-card-actions class="button-group">
+      <a mat-raised-button color="primary" routerLink="/login">Увійти</a>
+      <a mat-raised-button color="accent" routerLink="/register">Зареєструватись</a>
+    </mat-card-actions>
+  </mat-card>
 </div>

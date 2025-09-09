@@ -1,28 +1,23 @@
-.home-container {
+.center-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
+  align-items: center;
   height: 100vh;
   background-color: #f0f2f5;
-  color: #333;
+}
+
+.welcome-card {
+  max-width: 400px;
+  text-align: center;
+  padding: 2em;
+  color: white;
 }
 
 .button-group {
   margin-top: 20px;
-}
-
-.button {
-  text-decoration: none;
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin: 0 10px;
-  transition: background-color 0.3s ease;
-}
-
-.button:hover {
-  background-color: #0056b3;
+  display: flex;
+  justify-content: space-around;
+  a {
+    text-decoration: none;
+  }
 }

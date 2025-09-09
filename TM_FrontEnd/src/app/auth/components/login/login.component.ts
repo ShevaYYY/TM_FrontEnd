@@ -3,7 +3,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http'; // ✅ Важливо!
+import { HttpClientModule } from '@angular/common/http'; 
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +15,11 @@ import { HttpClientModule } from '@angular/common/http'; // ✅ Важливо!
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule // ✅ Переконайся, що він тут є
+    HttpClientModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

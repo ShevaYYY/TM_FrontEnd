@@ -1,61 +1,145 @@
 <div class="admin-dashboard-container">
-  <aside class="sidebar">
-    <button (click)="setView('abonents')" [class.active]="view === 'abonents'">Абоненти</button>
-    <button (click)="setView('cities')" [class.active]="view === 'cities'">Міста</button>
-    <button (click)="setView('add-abonent')" [class.active]="view === 'add-abonent'">Додати абонента</button>
-    <button (click)="setView('add-city')" [class.active]="view === 'add-city'">Додати місто</button>
-    <button (click)="logout()">Вийти</button>
-  </aside>
+  <mat-toolbar color="primary">
+    <span>Панель Адміністратора</span>
+    <span class="spacer"></span>
+    <button mat-button (click)="logout()">Вийти</button>
+  </mat-toolbar>
 
-  <main class="content">
-    <div *ngIf="view === 'abonents'" class="view-section">
-      <h2>Список абонентів</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Код ЄДРПОУ</th>
-            <th>Місто</th>
-            <th>Користувач (email)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let abonent of abonents">
-            <td>{{ abonent.codeEDRPOU }}</td>
-            <td>{{ abonent.cityId?.name }}</td>
-            <td>{{ abonent.userId?.email }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <mat-sidenav-container class="dashboard-container">
+    <mat-sidenav mode="side" opened class="sidebar">
+      <button mat-button (click)="setView('abonents')" [class.active]="view === 'abonents'">
+        <mat-icon>people</mat-icon> Абоненти
+      </button>
+      <button mat-button (click)="setView('cities')" [class.active]="view === 'cities'">
+        <mat-icon>location_city</mat-icon> Міста
+      </button>
+      <button mat-button (click)="setView('add-abonent')" [class.active]="view === 'add-abonent'">
+        <mat-icon>person_add</mat-icon> Додати абонента
+      </button>
+      <button mat-button (click)="setView('add-city')" [class.active]="view === 'add-city'">
+        <mat-icon>add_location</mat-icon> Додати місто
+      </button>
+    </mat-sidenav>
 
-    <div *ngIf="view === 'cities'" class="view-section">
-      <h2>Список міст</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Назва</th>
-            <th>Денний тариф</th>
-            <th>Нічний тариф</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let city of cities">
-            <td>{{ city.name }}</td>
-            <td>{{ city.dayTariff | number: '1.2-2' }} грн</td>
-            <td>{{ city.nightTariff | number: '1.2-2' }} грн</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <div *ngIf="view === 'add-abonent'" class="view-section">
-      <h2>Додати нового абонента</h2>
-      <app-abonent-form (abonentAdded)="loadAbonents()"></app-abonent-form>
-    </div>
+    <mat-sidenav-content class="content">
+      <mat-card *ngIf="view === 'abonents'" class="view-section">
+        <mat-card-title>Список абонентів</mat-card-title>
+        <mat-card-content>
+          <div class="table-container">
+            <table mat-table [dataSource]="abonents" class="full-width-table">
+              <ng-container matColumnDef="codeEDRPOU">
+                <th mat-header-cell *matHeaderCellDef>Код ЄДРПОУ</th>
+                <td mat-cell *matCellDef="let abonent">{{ abonent.codeEDRPOU }}</td>
+              </ng-container>
+              <ng-container matColumnDef="city">
+                <th mat-header-cell *matHeaderCellDef>Місто</th>
+                <td mat-cell *matCellDef="let abonent">{{ abonent.cityId?.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef>Користувач (email)</th>
+                <td mat-cell *matCellDef="let abonent">{{ abonent.userId?.email }}</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Дії</th>
+                <td mat-cell *matCellDef="let abonent">
+                  <button mat-icon-button color="warn" (click)="deleteAbonent(abonent._id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" (click)="viewAbonentHistory(abonent)">
+                    <mat-icon>history</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="['codeEDRPOU', 'city', 'user', 'actions']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['codeEDRPOU', 'city', 'user', 'actions'];"></tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
-    <div *ngIf="view === 'add-city'" class="view-section">
-      <h2>Додати нове місто</h2>
-      <app-city-form (cityAdded)="loadCities()"></app-city-form>
-    </div>
-  </main>
+      <mat-card *ngIf="view === 'cities'" class="view-section">
+        <mat-card-title>Список міст</mat-card-title>
+        <mat-card-content>
+          <div class="table-container">
+            <table mat-table [dataSource]="cities" class="full-width-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Назва</th>
+                <td mat-cell *matCellDef="let city">{{ city.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="dayTariff">
+                <th mat-header-cell *matHeaderCellDef>Денний тариф</th>
+                <td mat-cell *matCellDef="let city">{{ city.dayTariff | number: '1.2-2' }} грн</td>
+              </ng-container>
+              <ng-container matColumnDef="nightTariff">
+                <th mat-header-cell *matHeaderCellDef>Нічний тариф</th>
+                <td mat-cell *matCellDef="let city">{{ city.nightTariff | number: '1.2-2' }} грн</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Дії</th>
+                <td mat-cell *matCellDef="let city">
+                  <button mat-icon-button color="warn" (click)="deleteCity(city._id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="['name', 'dayTariff', 'nightTariff', 'actions']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['name', 'dayTariff', 'nightTariff', 'actions'];"></tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div *ngIf="view === 'add-abonent'" class="view-section">
+        <app-abonent-form (abonentAdded)="onAbonentAdded()"></app-abonent-form>
+      </div>
+
+      <div *ngIf="view === 'add-city'" class="view-section">
+        <app-city-form (cityAdded)="onCityAdded()"></app-city-form>
+      </div>
+      
+      <div *ngIf="view === 'call-history'" class="view-section">
+        <mat-card>
+          <mat-card-title>Історія дзвінків для {{ selectedAbonent?.codeEDRPOU }}</mat-card-title>
+          <mat-card-content>
+            <button mat-button (click)="setView('abonents')">
+              <mat-icon>arrow_back</mat-icon> Повернутися до абонентів
+            </button>
+            <div *ngIf="callHistory.length > 0; else noCalls">
+              <table mat-table [dataSource]="callHistory" class="full-width-table">
+                <ng-container matColumnDef="phoneNumber">
+                  <th mat-header-cell *matHeaderCellDef>Номер</th>
+                  <td mat-cell *matCellDef="let call">{{ call.phoneNumber }}</td>
+                </ng-container>
+                <ng-container matColumnDef="city">
+                  <th mat-header-cell *matHeaderCellDef>Місто</th>
+                  <td mat-cell *matCellDef="let call">{{ call.cityId?.name }}</td>
+                </ng-container>
+                <ng-container matColumnDef="startTime">
+                  <th mat-header-cell *matHeaderCellDef>Початок дзвінка</th>
+                  <td mat-cell *matCellDef="let call">{{ call.startTime | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="endTime">
+                  <th mat-header-cell *matHeaderCellDef>Кінець дзвінка</th>
+                  <td mat-cell *matCellDef="let call">{{ call.endTime | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="duration">
+                  <th mat-header-cell *matHeaderCellDef>Тривалість</th>
+                  <td mat-cell *matCellDef="let call">{{ formatDuration(call.duration) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="cost">
+                  <th mat-header-cell *matHeaderCellDef>Вартість</th>
+                  <td mat-cell *matCellDef="let call">{{ call.cost | number: '1.2-2' }} грн</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="['phoneNumber', 'city', 'startTime', 'endTime', 'duration', 'cost']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['phoneNumber', 'city', 'startTime', 'endTime', 'duration', 'cost'];"></tr>
+              </table>
+            </div>
+            <ng-template #noCalls>
+              <p>Історія дзвінків для цього абонента порожня.</p>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
