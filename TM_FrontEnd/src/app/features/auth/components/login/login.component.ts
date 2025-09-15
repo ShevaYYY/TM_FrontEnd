@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http'; 
 import { MatCardModule } from '@angular/material/card';
@@ -41,7 +41,6 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: (data) => {
           console.log('Login successful', data);
-          // ✅ Логіка перенаправлення тепер в AuthService
         },
         error: (err) => {
           console.error('Login failed', err);

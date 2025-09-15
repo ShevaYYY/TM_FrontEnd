@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../auth/services/auth.service';
-import { CallService } from '../../core/services/call.service';
-import { AbonentService } from '../../core/services/abonent.service';
-import { ICall, IUser, IAbonent } from '../../core/models/interfaces';
+import { AuthService } from '../../../core/services/auth.service';
+import { CallService } from '../../../shared/services/call.service';
+import { AbonentService } from '../../../shared/services/abonent.service';
+import { ICall, IUser, IAbonent } from '../../../shared/models/interfaces';
 import { timer, Subscription } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';

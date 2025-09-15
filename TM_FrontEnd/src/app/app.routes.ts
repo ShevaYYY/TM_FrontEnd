@@ -12,20 +12,20 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import('./auth/components/login/login.component').then(m => m.LoginComponent)
+    loadComponent: () => import('./features/auth/components/login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'register',
-    loadComponent: () => import('./auth/components/register/register.component').then(m => m.RegisterComponent)
+    loadComponent: () => import('./features/auth/components/register/register.component').then(m => m.RegisterComponent)
   },
   {
     path: 'admin',
-    loadComponent: () => import('./dashboard/admin/admin-dashboard.component').then(m => m.AdminDashboardComponent),
+    loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
     canActivate: [adminGuard] 
   },
   {
     path: 'user',
-    loadComponent: () => import('./dashboard/user/user-dashboard.component').then(m => m.UserDashboardComponent),
+    loadComponent: () => import('./features/user/user-dashboard/user-dashboard.component').then(m => m.UserDashboardComponent),
     canActivate: [clientGuard] 
   }
 ];

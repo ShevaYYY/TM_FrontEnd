@@ -1,10 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AbonentService } from '../../../core/services/abonent.service';
-import { AuthService } from '../../../auth/services/auth.service';
-import { CityService } from '../../../core/services/city.service';
-import { ICity, IUser } from '../../../core/models/interfaces';
+import { AbonentService } from '../../../../shared/services/abonent.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { CityService } from '../../../../shared/services/city.service';
+import { ICity, IUser } from '../../../../shared/models/interfaces';
 
 
 

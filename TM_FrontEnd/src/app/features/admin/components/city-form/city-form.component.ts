@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CityService } from '../../../core/services/city.service';
+import { CityService } from '../../../../shared/services/city.service';
 
 @Component({
   selector: 'app-city-form',

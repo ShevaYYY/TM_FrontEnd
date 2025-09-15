@@ -1,13 +1,12 @@
-// src/app/dashboard/admin/admin-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbonentService } from '../../core/services/abonent.service';
-import { CityService } from '../../core/services/city.service';
-import { AuthService } from '../../auth/services/auth.service';
-import { CallService } from '../../core/services/call.service';
-import { IAbonent, ICity, ICall } from '../../core/models/interfaces';
-import { CityFormComponent } from './city-form/city-form.component';
-import { AbonentFormComponent } from './abonent-form/abonent-form.component';
+import { AbonentService } from '../../../shared/services/abonent.service';
+import { CityService } from '../../../shared/services/city.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { CallService } from '../../../shared/services/call.service';
+import { IAbonent, ICity, ICall } from '../../../shared/models/interfaces';
+import { CityFormComponent } from '../components/city-form/city-form.component';
+import { AbonentFormComponent } from '../components/abonent-form/abonent-form.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,14 +35,14 @@ export class AdminDashboardComponent implements OnInit {
   view: 'abonents' | 'cities' | 'add-city' | 'add-abonent' | 'call-history' = 'abonents';
   abonents: IAbonent[] = [];
   cities: ICity[] = [];
-  callHistory: ICall[] = []; // New field for call history
-  selectedAbonent: IAbonent | null = null; // New field for the selected abonent
+  callHistory: ICall[] = []; 
+  selectedAbonent: IAbonent | null = null; 
 
   constructor(
     private authService: AuthService,
     private abonentService: AbonentService,
     private cityService: CityService,
-    private callService: CallService // Inject CallService
+    private callService: CallService 
   ) { }
 
   ngOnInit(): void {
@@ -84,14 +83,14 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  // New method to load abonent's call history
+  
   viewAbonentHistory(abonent: IAbonent) {
     if (!abonent._id) return;
-    this.selectedAbonent = abonent; // Store the selected abonent
+    this.selectedAbonent = abonent; 
     this.callService.getCallsByAbonentId(abonent._id).subscribe({
       next: (calls) => {
         this.callHistory = calls;
-        this.setView('call-history'); // Change view to show history
+        this.setView('call-history'); 
       },
       error: (err) => {
         console.error('Failed to load call history', err);
