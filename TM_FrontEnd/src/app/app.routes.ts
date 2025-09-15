@@ -27,5 +27,9 @@ export const routes: Routes = [
     path: 'user',
     loadComponent: () => import('./features/user/user-dashboard/user-dashboard.component').then(m => m.UserDashboardComponent),
     canActivate: [clientGuard] 
-  }
+  },
+  {
+    path: '**', 
+    redirectTo: '',
+  },
 ];
